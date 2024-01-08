@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fydaa_assignment/core/constants.dart';
 import 'package:fydaa_assignment/presentation/components/global_components.dart';
 import 'package:fydaa_assignment/presentation/pages/otp_input_page.dart';
 
-class MobileInputPage extends StatelessWidget {
+class MobileInputPage extends StatefulWidget {
   const MobileInputPage({super.key});
+
+  @override
+  State<MobileInputPage> createState() => _MobileInputPageState();
+}
+
+class _MobileInputPageState extends State<MobileInputPage> {
+  TextEditingController mobileNoController = TextEditingController();
+  String? mobileNo;
+  bool allowFydaa = false;
+
+  bool getOTPBtnEnabled() => allowFydaa && mobileNo?.length == 10;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +33,7 @@ class MobileInputPage extends StatelessWidget {
           const Text("Mobile Number", style: FTextStyles.ebonyRegular400),
           fVerticalSpace(),
           TextField(
+            controller: mobileNoController,
             decoration: InputDecoration(
                 floatingLabelAlignment: FloatingLabelAlignment.start,
                 hintText: "Enter mobile no",
@@ -32,7 +43,7 @@ class MobileInputPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 contentPadding: const EdgeInsets.all(20)),
-            onChanged: (value) {},
+            onChanged: (value) => setState(() => mobileNo = value),
             keyboardType: TextInputType.phone,
             maxLength: 10,
             buildCounter: (context,
@@ -41,9 +52,12 @@ class MobileInputPage extends StatelessWidget {
           ),
           const Spacer(),
           ElevatedButton(
-            onPressed: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => const OtpInputPage())),
+            onPressed: getOTPBtnEnabled()
+                ? () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => OtpInputPage(mobileNo: mobileNo!)))
+                : null,
             style: const ButtonStyle(
+                foregroundColor: MaterialStatePropertyAll(white),
                 padding: MaterialStatePropertyAll(EdgeInsets.all(23)),
                 backgroundColor: MaterialStatePropertyAll(greyscale),
                 shape: MaterialStatePropertyAll(RoundedRectangleBorder(
@@ -51,16 +65,14 @@ class MobileInputPage extends StatelessWidget {
             child: const Text("Get OTP"),
           ),
           const Spacer(flex: 2),
-          Row(
-            children: [
-              SvgPicture.string(radiosSVG),
-              fHorizontalSpace(),
-              const Flexible(
-                child: Text(
-                    "Allow fydaa to send financial knowledge and critical alerts on your WhatsApp.",
-                    style: FTextStyles.paleSkySmall400),
-              )
-            ],
+          CheckboxListTile(
+            value: allowFydaa,
+            onChanged: (value) => setState(() => allowFydaa = value!),
+            controlAffinity: ListTileControlAffinity.leading,
+            contentPadding: EdgeInsets.zero,
+            title: const Text(
+                "Allow fydaa to send financial knowledge and critical alerts on your WhatsApp.",
+                style: FTextStyles.paleSkySmall400),
           ),
         ],
       ),

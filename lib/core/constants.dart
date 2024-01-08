@@ -6,8 +6,6 @@ const String checkSVG =
     '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12L9 17L20 6" stroke="white" stroke-width="2.4" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const String crossSVG =
     '<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_403_197)"><path d="M9.90909 7.36364L12.4716 11.625H12.5625L15.1364 7.36364H17.5398L13.9545 13.1818L17.5966 19H15.1534L12.5625 14.767H12.4716L9.88068 19H7.44886L11.125 13.1818L7.49432 7.36364H9.90909Z" fill="white"/></g><defs><clipPath id="clip0_403_197"><rect x="0.5" width="24" height="24" rx="4" fill="white"/></clipPath></defs></svg>';
-const String radiosSVG =
-    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.376 0 0 5.376 0 12C0 18.624 5.376 24 12 24C18.624 24 24 18.624 24 12C24 5.376 18.636 0 12 0ZM12.036 17.076C9.228 17.076 6.96 14.808 6.96 12C6.96 9.192 9.228 6.924 12.036 6.924C14.844 6.924 17.112 9.192 17.112 12C17.112 14.808 14.844 17.076 12.036 17.076Z" fill="#007DFB"/></svg>';
 
 const double fPadding = 24;
 

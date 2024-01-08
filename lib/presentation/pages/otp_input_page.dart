@@ -7,7 +7,11 @@ import 'package:fydaa_assignment/presentation/components/global_components.dart'
 import 'package:fydaa_assignment/presentation/components/otp_input.dart';
 
 class OtpInputPage extends StatefulWidget {
-  const OtpInputPage({super.key});
+  final String mobileNo;
+  const OtpInputPage({
+    super.key,
+    required this.mobileNo,
+  });
 
   @override
   State<OtpInputPage> createState() => _OtpInputPageState();
@@ -16,7 +20,7 @@ class OtpInputPage extends StatefulWidget {
 class _OtpInputPageState extends State<OtpInputPage> {
   bool? otpVerified;
   late Timer _timer;
-  int _seconds = 10;
+  int _seconds = 170;
 
   @override
   void initState() {
@@ -41,7 +45,7 @@ class _OtpInputPageState extends State<OtpInputPage> {
   }
 
   void resetTimer() {
-    setState(() => _seconds = 10);
+    setState(() => _seconds = 170);
     startTimer();
   }
 
@@ -57,6 +61,12 @@ class _OtpInputPageState extends State<OtpInputPage> {
     super.dispose();
   }
 
+  String maskMobileNumber(String number) {
+    String formattedNumber =
+        '(${number.substring(0, 1)}**) ***-**${number.substring(8, 10)}';
+    return formattedNumber;
+  }
+
   @override
   Widget build(BuildContext context) {
     return fScaffold(
@@ -66,7 +76,8 @@ class _OtpInputPageState extends State<OtpInputPage> {
         children: [
           const Text("Verify your phone", style: FTextStyles.bigTitle500),
           fVerticalSpace(space: 18),
-          const Text("Enter the verification code sent to (9**) ***-**31.",
+          Text(
+              "Enter the verification code sent to ${maskMobileNumber(widget.mobileNo)}",
               style: FTextStyles.paleSkySubtitle400),
           fVerticalSpace(space: 18),
           AnimatedContainer(
