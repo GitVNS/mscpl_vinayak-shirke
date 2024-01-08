@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fydaa_assignment/core/constants.dart';
 import 'package:fydaa_assignment/presentation/components/global_components.dart';
 import 'package:fydaa_assignment/presentation/components/otp_input.dart';
-import 'package:fydaa_assignment/presentation/components/otp_timer.dart';
 
 class OtpInputPage extends StatefulWidget {
   const OtpInputPage({super.key});
@@ -14,7 +15,47 @@ class OtpInputPage extends StatefulWidget {
 
 class _OtpInputPageState extends State<OtpInputPage> {
   bool? otpVerified;
-  int timerSeconds = 10;
+  late Timer _timer;
+  int _seconds = 10;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSecond,
+      (timer) => setState(
+        () {
+          if (_seconds == 0) {
+            _timer.cancel();
+          } else {
+            _seconds--;
+          }
+        },
+      ),
+    );
+  }
+
+  void resetTimer() {
+    setState(() => _seconds = 10);
+    startTimer();
+  }
+
+  String get timerText {
+    int minutes = _seconds ~/ 60;
+    int seconds = _seconds % 60;
+    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +98,7 @@ class _OtpInputPageState extends State<OtpInputPage> {
                 ),
                 fVerticalSpace(space: 14),
                 if (otpVerified == null) ...[
-                  OtpTimer(
-                    onTimeChanged: (value) =>
-                        setState(() => timerSeconds = value),
-                  )
+                  Text("Verification code expires in $timerText")
                 ] else ...[
                   if (otpVerified!)
                     Row(
@@ -88,7 +126,8 @@ class _OtpInputPageState extends State<OtpInputPage> {
           ),
           const Spacer(),
           outlineBtn(
-              title: "Resend Code", onTap: timerSeconds == 0 ? () {} : null),
+              title: "Resend Code",
+              onTap: _seconds == 0 ? () => resetTimer() : null),
           fVerticalSpace(space: 18),
           outlineBtn(
             title: "Change Number",
