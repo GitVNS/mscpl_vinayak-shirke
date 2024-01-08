@@ -1,3 +1,3 @@
 # fydaa_assignment
 
-A new Flutter project.
+![](https://github.com/GitVNS//mscpl_vinayak-shirke/sample/sample.gif)
